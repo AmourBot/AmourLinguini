@@ -3,3 +3,4 @@ export { LangFile, CommonFile, CategoryItems, TypeMapper } from './models/intern
 export { Utils } from './utils';
 export { TypeMappers } from './type-mappers';
 export { LinguiniError } from './models/error-models';
+export { Categorized, Location, instanceOfLocation } from './models/categorized-location';

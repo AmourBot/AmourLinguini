@@ -1,4 +1,5 @@
 import path from 'path';
+import { Categorized } from './models/categorized-location';
 import { LinguiniError } from './models/error-models';
 import { CommonFile, LangFile, TypeMapper } from './models/internal-models';
 import { DataUtils, FileUtils, RegexUtils } from './utils/';
@@ -110,7 +111,7 @@ export class Linguini {
         location: string,
         langCode: string,
         typeMapper: TypeMapper<T>,
-        variables?: { [name: string]: string }
+        variables?: Categorized
     ): T {
         let raw = this.getRaw(location, langCode, variables);
         return typeMapper(raw);
@@ -125,7 +126,7 @@ export class Linguini {
      *
      * @returns The retrieved language file item.
      */
-    public getRaw(location: string, langCode: string, variables?: { [name: string]: string }): any {
+    public getRaw(location: string, langCode: string, variables?: Categorized): any {
         let langData = this.langDatas[langCode];
         if (langData === undefined) {
             throw new LinguiniError(`Invalid language code: ${langCode}`);

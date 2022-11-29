@@ -1,8 +1,9 @@
+import { Categorized, Location, instanceOfLocation } from '../models/categorized-location';
 import { CategoryItems } from '../models/internal-models';
 import { StringUtils } from './';
 
 export class DataUtils {
-    public static replaceVariables(input: string, variables: { [name: string]: string }): string {
+    public static replaceVariables(input: string, variables: Location): string {
         let output = input;
         for (let [varName, varValue] of Object.entries(variables)) {
             output = output.replaceAll(`{{${varName}}}`, varValue);
@@ -10,10 +11,7 @@ export class DataUtils {
         return output;
     }
 
-    public static replaceVariablesInObj(
-        jsonValue: any,
-        variables: { [name: string]: string }
-    ): any {
+    public static replaceVariablesInObj(jsonValue: any, variables: Categorized | Location): any {
         switch (typeof jsonValue) {
             case 'object': {
                 for (let key in jsonValue) {
@@ -27,7 +25,11 @@ export class DataUtils {
                 break;
             }
             case 'string': {
-                jsonValue = this.replaceVariables(jsonValue, variables);
+                if (instanceOfLocation(variables)) {
+                    jsonValue = this.replaceVariables(jsonValue, variables);
+                } else {
+                    jsonValue = this.replaceVariablesInObj(jsonValue, variables);
+                }
                 break;
             }
             default: {
